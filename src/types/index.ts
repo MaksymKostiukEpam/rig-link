@@ -4,5 +4,7 @@ export type { Alert, AlertSeverity } from "./alert";
 export type { Shipment, ShipmentStatus, ShipmentLocation } from "./shipment";
 export type { Rig, RigStatus } from "./rig";
 export type { Warehouse } from "./warehouse";
-export type { VehicleType } from "./vehicle";
+export type { VehicleType, Vehicle } from "./vehicle";
 export type { Location } from "./location";
+export type { StorageCapacity, CrewStatus } from "./storage";
+export type { Weather } from "./weather";

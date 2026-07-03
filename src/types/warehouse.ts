@@ -1,7 +1,8 @@
 import type { InventoryItem } from "./inventory";
 import type { Location } from "./location";
+import type { StorageCapacity } from "./storage";
 
 export interface Warehouse extends Location {
-  capacity: number;
+  storageCapacity: StorageCapacity;
   inventory: InventoryItem[];
 }

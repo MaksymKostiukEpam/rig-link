@@ -1,12 +1,13 @@
 import type { InventoryItem } from "./inventory";
-import type { VehicleType } from "./vehicle";
+import type { Vehicle } from "./vehicle";
 
 export type ShipmentStatus =
   | "Preparing"
   | "Loading"
   | "In Transit"
   | "Delayed"
-  | "Delivered";
+  | "Delivered"
+  | "Cancelled";
 
 export interface ShipmentLocation {
   id: string;
@@ -20,8 +21,10 @@ export interface Shipment {
   originName: string;
   destinationId: string;
   destinationName: string;
-  vehicle: VehicleType;
-  eta: string;
+  vehicle: Vehicle;
+  estimatedArrival: string;
+  createdAt: string;
+  lastUpdated: string;
   status: ShipmentStatus;
   cargo: InventoryItem[];
 }
