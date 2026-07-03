@@ -9,7 +9,7 @@ const links = [
 
 export default function Sidebar() {
   return (
-    <aside className="hidden min-h-screen w-full max-w-[280px] shrink-0 flex-col gap-6 border-r border-border bg-sidebar p-6 text-sidebar-foreground md:flex">
+    <aside className="app-sidebar hidden min-h-screen w-full max-w-[280px] shrink-0 flex-col gap-6 border-r border-border bg-sidebar p-6 text-sidebar-foreground md:flex">
       <div className="space-y-2">
         <p className="text-xs uppercase tracking-[0.24em] text-muted-foreground">
           Rig Link
