@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Menu, Search, SunMedium, Moon } from "lucide-react";
+import { Menu, SunMedium, Moon } from "lucide-react";
 import { useTheme } from "../../hooks/use-theme";
 
 type HeaderProps = {
@@ -24,49 +24,38 @@ export default function Header({ onOpenSidebar }: HeaderProps) {
           </h2>
         </div>
 
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <div className="relative w-full sm:w-72">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <input
-              type="search"
-              placeholder="Search rigs, shipments, warehouses..."
-              className="w-full rounded-full border border-border bg-card px-10 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-            />
-          </div>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-foreground transition hover:bg-muted/80 md:hidden"
+            onClick={onOpenSidebar}
+            aria-label="Open navigation"
+          >
+            <Menu className="h-5 w-5" />
+          </button>
 
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-foreground transition hover:bg-muted/80 md:hidden"
-              onClick={onOpenSidebar}
-              aria-label="Open navigation"
-            >
-              <Menu className="h-5 w-5" />
-            </button>
-
-            <button
-              type="button"
-              className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition ${
-                theme === "light"
-                  ? "border border-border bg-secondary text-secondary-foreground"
-                  : "border border-border bg-primary text-primary-foreground"
-              }`}
-              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-            >
-              {mounted ? (
-                <>
-                  {theme === "light" ? (
-                    <Moon className="h-4 w-4" />
-                  ) : (
-                    <SunMedium className="h-4 w-4" />
-                  )}
-                  <span>{theme === "light" ? "Dark" : "Light"}</span>
-                </>
-              ) : (
-                "Toggle"
-              )}
-            </button>
-          </div>
+          <button
+            type="button"
+            className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition ${
+              theme === "light"
+                ? "border border-border bg-secondary text-secondary-foreground"
+                : "border border-border bg-primary text-primary-foreground"
+            }`}
+            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+          >
+            {mounted ? (
+              <>
+                {theme === "light" ? (
+                  <Moon className="h-4 w-4" />
+                ) : (
+                  <SunMedium className="h-4 w-4" />
+                )}
+                <span>{theme === "light" ? "Dark" : "Light"}</span>
+              </>
+            ) : (
+              "Toggle"
+            )}
+          </button>
         </div>
       </div>
     </header>

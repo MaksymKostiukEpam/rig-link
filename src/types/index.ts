@@ -8,3 +8,4 @@ export type { VehicleType, Vehicle } from "./vehicle";
 export type { Location } from "./location";
 export type { StorageCapacity, CrewStatus } from "./storage";
 export type { Weather } from "./weather";
+export type { Status } from "./status";
