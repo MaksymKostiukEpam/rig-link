@@ -1,4 +1,3 @@
-import React from "react";
 import { Marker, Tooltip } from "react-leaflet";
 // @ts-ignore
 import L from "leaflet";

@@ -102,7 +102,7 @@ const InfoPanel: FC<Props> = ({ entity, className = "", onOpenDetails }) => {
       </dl>
 
       <div className="mt-6">
-        <Button onClick={onOpenDetails} variant="secondary">
+        <Button onClick={onOpenDetails} variant="outline">
           Open Rig Details
         </Button>
       </div>
