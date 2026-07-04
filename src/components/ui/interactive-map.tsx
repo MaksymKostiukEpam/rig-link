@@ -1,11 +1,9 @@
 import { useMemo, useState, useEffect } from "react";
-import { MapContainer, Marker, Tooltip, Popup, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, useMap } from "react-leaflet";
+
 import type { Rig, Warehouse } from "@/types";
-import EntityCard from "./entity-card";
-// @ts-ignore - leaflet types may not be installed in this workspace
-import L from "leaflet";
-const AnyMarker: any = Marker;
-const AnyPopup: any = Popup;
+import MapMarker from "./map-marker";
+import InfoPanel from "./info-panel";
 import { useTheme } from "@/hooks/use-theme";
 
 type Props = {
@@ -13,134 +11,151 @@ type Props = {
   warehouses: Warehouse[];
 };
 
+function FitBounds({ bounds }: { bounds?: [number, number][] }) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!bounds?.length) return;
+
+    map.fitBounds(bounds, {
+      padding: [60, 60],
+      animate: true,
+    });
+  }, [bounds, map]);
+
+  return null;
+}
+
 export default function InteractiveMap({ rigs, warehouses }: Props) {
+  const { theme } = useTheme();
+
   const [selected, setSelected] = useState<Rig | Warehouse | null>(null);
+
+  useEffect(() => {
+    if (!selected && rigs.length) {
+      setSelected(rigs[0]);
+    }
+  }, [rigs, selected]);
 
   const bounds = useMemo(() => {
     const latlngs: [number, number][] = [];
-    rigs.forEach((r) => latlngs.push([r.coordinates.lat, r.coordinates.lng]));
-    warehouses.forEach((w) =>
-      latlngs.push([w.coordinates.lat, w.coordinates.lng]),
+
+    rigs.forEach((rig) =>
+      latlngs.push([rig.coordinates.lat, rig.coordinates.lng]),
     );
-    return latlngs.length ? latlngs : undefined;
+
+    warehouses.forEach((warehouse) =>
+      latlngs.push([warehouse.coordinates.lat, warehouse.coordinates.lng]),
+    );
+
+    return latlngs;
   }, [rigs, warehouses]);
 
-  const defaultCenter = [30, -120] as [number, number];
-  const { theme } = useTheme();
+  const getRigColor = (status: string) => {
+    switch (status) {
+      case "Operational":
+        return "#22c55e";
 
-  const getRigColor = (status: string) =>
-    status === "Operational"
-      ? "#16a34a"
-      : status === "Maintenance"
-        ? "#f59e0b"
-        : "#ef4444";
+      case "Maintenance":
+        return "#f59e0b";
 
-  const createIcon = (color: string) =>
-    L.divIcon({
-      className: "",
-      html: `<span style="display:inline-block;width:18px;height:18px;border-radius:50%;background:${color};box-shadow:0 0 0 3px rgba(0,0,0,0.08);border:2px solid rgba(255,255,255,0.9)"></span>`,
-      iconSize: [18, 18],
-      iconAnchor: [9, 9],
-      popupAnchor: [0, -10],
-    } as any);
+      default:
+        return "#ef4444";
+    }
+  };
 
-  function ThemeTileLayer({ theme }: { theme: string }) {
-    const map = useMap();
-
-    useEffect(() => {
-      const url =
-        theme === "dark"
-          ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-          : "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-      const attribution =
-        theme === "dark"
-          ? '&copy; <a href="https://carto.com/">CartoDB</a>'
-          : '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>';
-
-      const layer = L.tileLayer(url, { attribution } as any).addTo(map);
-      return () => {
-        try {
-          map.removeLayer(layer);
-        } catch (e) {
-          /* ignore */
+  const tileLayer =
+    theme === "dark"
+      ? {
+          url: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+          attribution: "&copy; CartoDB",
         }
-      };
-    }, [map, theme]);
-
-    return null;
-  }
+      : {
+          url: "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+          attribution: "&copy; OpenStreetMap & CartoDB",
+        };
 
   return (
-    <div className="h-[420px] ">
-      <MapContainer
-        // cast to any to avoid mismatched react-leaflet type issues in this workspace
-        {...({
-          center: bounds ? (bounds[0] as [number, number]) : defaultCenter,
-        } as any)}
-        zoom={6}
-        scrollWheelZoom={false}
-        style={{ height: "100%", width: "100%" }}
-      >
-        <ThemeTileLayer theme={theme} />
+    <div className="rounded-3xl border border-border/60 bg-card shadow-xl overflow-hidden">
+      <div className="flex h-[620px]">
+        {/* Map */}
 
-        {rigs.map((r) => (
-          <AnyMarker
-            key={r.id}
-            position={[r.coordinates.lat, r.coordinates.lng] as any}
-            icon={createIcon(getRigColor(r.status)) as any}
-            eventHandlers={{ click: () => setSelected(r) } as any}
+        <div className="relative flex-[2.4]">
+          <MapContainer
+            center={[30, -120]}
+            zoom={5}
+            zoomControl={false}
+            scrollWheelZoom={false}
+            style={{
+              height: "100%",
+              width: "100%",
+            }}
           >
-            <Tooltip>{r.name}</Tooltip>
-          </AnyMarker>
-        ))}
+            <TileLayer
+              key={theme}
+              url={tileLayer.url}
+              attribution={tileLayer.attribution}
+            />
 
-        {warehouses.map((w) => (
-          <AnyMarker
-            key={w.id}
-            position={[w.coordinates.lat, w.coordinates.lng] as any}
-            icon={createIcon("#2563eb") as any}
-            eventHandlers={{ click: () => setSelected(w) } as any}
-          >
-            <Tooltip>{w.name}</Tooltip>
-          </AnyMarker>
-        ))}
+            <FitBounds bounds={bounds} />
 
-        {selected ? (
-          <AnyPopup
-            position={
-              [selected.coordinates.lat, selected.coordinates.lng] as any
-            }
-            onClose={() => setSelected(null)}
-          >
-            <div className="max-w-xs">
-              <EntityCard
-                title={selected.name}
-                subtitle={selected.id}
-                status={
-                  ("status" in selected
-                    ? (selected as any).status
-                    : undefined) as any
-                }
-                crew={
-                  ("crew" in selected
-                    ? (selected as any).crew
-                    : undefined) as any
-                }
-                storagePercent={
-                  ("storageCapacity" in selected
-                    ? Math.round(
-                        ((selected as any).storageCapacity.used /
-                          (selected as any).storageCapacity.total) *
-                          100,
-                      )
-                    : undefined) as any
-                }
-                actionLabel="Open →"
+            {rigs.map((rig) => (
+              <MapMarker
+                key={rig.id}
+                position={[rig.coordinates.lat, rig.coordinates.lng]}
+                color={getRigColor(rig.status)}
+                name={rig.name}
+                onClick={() => setSelected(rig)}
               />
+            ))}
+
+            {warehouses.map((warehouse) => (
+              <MapMarker
+                key={warehouse.id}
+                position={[
+                  warehouse.coordinates.lat,
+                  warehouse.coordinates.lng,
+                ]}
+                color="#8b5cf6"
+                name={warehouse.name}
+                onClick={() => setSelected(warehouse)}
+              />
+            ))}
+          </MapContainer>
+
+          {/* Legend */}
+
+          <div className="absolute bottom-5 left-5 z-[500] rounded-2xl border border-border/70 bg-background/90 backdrop-blur-md px-4 py-3 shadow-lg">
+            <div className="space-y-2 text-sm">
+              <LegendItem color="#22c55e" label="Operational" />
+              <LegendItem color="#f59e0b" label="Maintenance" />
+              <LegendItem color="#ef4444" label="Offline" />
+              <LegendItem color="#8b5cf6" label="Warehouse" />
             </div>
-          </AnyPopup>
-        ) : null}
-      </MapContainer>
+          </div>
+        </div>
+
+        {/* Info Panel */}
+
+        <aside className="w-[380px] border-l border-border bg-background">
+          <div className="sticky top-0 h-full overflow-auto p-6">
+            <InfoPanel entity={selected as any} onOpenDetails={() => {}} />
+          </div>
+        </aside>
+      </div>
+    </div>
+  );
+}
+
+function LegendItem({ color, label }: { color: string; label: string }) {
+  return (
+    <div className="flex items-center gap-2">
+      <span
+        className="h-3 w-3 rounded-full shadow"
+        style={{ backgroundColor: color }}
+      />
+
+      <span className="text-muted-foreground">{label}</span>
     </div>
   );
 }

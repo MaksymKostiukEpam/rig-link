@@ -6,7 +6,7 @@ const STORAGE_KEY = "rig-link-theme";
 
 function getInitialTheme(): Theme {
   if (typeof window === "undefined") {
-    return "light";
+    return "dark";
   }
 
   const stored = window.localStorage.getItem(STORAGE_KEY) as Theme | null;

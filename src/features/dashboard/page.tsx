@@ -1,53 +1,59 @@
-import KpiCard from "@/components/ui/kpi-card";
+import MetricCard from "@/components/ui/metric-card";
 import InteractiveMap from "@/components/ui/interactive-map";
 import { rigs, warehouses } from "@/mocks/data";
-import { HardHat, Warehouse, Package, AlertCircle } from "lucide-react";
+import { Warehouse, Package, HardHat, TriangleAlert } from "lucide-react";
+import SectionHeader from "@/components/ui/section-header";
 
 export default function DashboardPage() {
   return (
-    <div className="space-y-6">
-      <header>
-        <h1 className="text-2xl font-semibold">Dashboard</h1>
-      </header>
-
+    <div className="mx-auto max-w-[1440px] space-y-8 p-6">
       <section>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <KpiCard
-            title="Rigs"
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+          <MetricCard
+            title="Active Rigs"
             value={18}
-            icon={<HardHat className="h-6 w-6" />}
-            trend={{ direction: "up", change: "+2 this week" }}
-            description="Active rigs"
+            description="Operational rigs online"
+            accent="blue"
+            trend={{ direction: "up", change: "+2" }}
+            icon={<HardHat className="h-7 w-7" />}
           />
 
-          <KpiCard
+          <MetricCard
             title="Warehouses"
             value={6}
-            icon={<Warehouse className="h-6 w-6" />}
-            trend={{ direction: "neutral", change: "" }}
             description="Total locations"
+            accent="purple"
+            icon={<Warehouse className="h-7 w-7" />}
           />
 
-          <KpiCard
+          <MetricCard
             title="Shipments"
             value={24}
-            icon={<Package className="h-6 w-6" />}
-            trend={{ direction: "up", change: "+3 this week" }}
-            description="Active shipments"
+            description="Shipments in transit"
+            accent="green"
+            trend={{ direction: "up", change: "+3" }}
+            icon={<Package className="h-7 w-7" />}
           />
 
-          <KpiCard
+          <MetricCard
             title="Critical Alerts"
             value={2}
-            icon={<AlertCircle className="h-6 w-6" />}
+            description="Require attention"
+            accent="orange"
             trend={{ direction: "up", change: "+1" }}
-            description="Requires attention"
+            icon={<TriangleAlert className="h-7 w-7" />}
           />
         </div>
       </section>
 
       <section>
-        <InteractiveMap rigs={rigs} warehouses={warehouses} />
+        <SectionHeader
+          title="Field Operations"
+          subtitle="Monitor offshore rigs, terminals and logistics positions in real time"
+        />
+        <div className="mt-4">
+          <InteractiveMap rigs={rigs} warehouses={warehouses} />
+        </div>
       </section>
     </div>
   );
