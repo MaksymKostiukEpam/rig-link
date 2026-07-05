@@ -82,6 +82,7 @@ export default function InteractiveMap({ rigs, warehouses }: Props) {
 
         <div className="relative flex-[2.4]">
           <MapContainer
+            //@ts-expect-error
             center={[30, -120]}
             zoom={5}
             zoomControl={false}
@@ -94,6 +95,7 @@ export default function InteractiveMap({ rigs, warehouses }: Props) {
             <TileLayer
               key={theme}
               url={tileLayer.url}
+              //@ts-expect-error
               attribution={tileLayer.attribution}
             />
 
