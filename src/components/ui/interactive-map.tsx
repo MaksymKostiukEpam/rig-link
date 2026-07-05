@@ -141,7 +141,7 @@ export default function InteractiveMap({ rigs, warehouses }: Props) {
 
         <aside className="w-[380px] border-l border-border bg-background">
           <div className="sticky top-0 h-full overflow-auto p-6">
-            <InfoPanel entity={selected as any} onOpenDetails={() => {}} />
+            <InfoPanel entity={selected} onOpenDetails={() => {}} />
           </div>
         </aside>
       </div>

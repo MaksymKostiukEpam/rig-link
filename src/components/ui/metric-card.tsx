@@ -5,19 +5,15 @@ import { ArrowDownRight, ArrowUpRight, Minus } from "lucide-react";
 type Props = {
   title: string;
   value: ReactNode;
+  subtitle?: string;
   icon?: ReactNode;
+  className?: string;
+
   trend?: {
     direction: "up" | "down" | "neutral";
     change: string;
   };
-  description?: string;
-  className?: string;
 
-  /**
-   * Optional accent color for the icon background and trend badge.
-   * Examples:
-   * blue | green | purple | orange | red
-   */
   accent?: "blue" | "green" | "purple" | "orange" | "red";
 };
 
@@ -47,9 +43,9 @@ const accentStyles = {
 const MetricCard: FC<Props> = ({
   title,
   value,
+  subtitle,
   icon,
   trend,
-  description,
   className,
   accent = "blue",
 }) => {
@@ -59,66 +55,72 @@ const MetricCard: FC<Props> = ({
     <div
       className={cn(
         "group rounded-2xl border border-border/60 bg-card/70 backdrop-blur-sm",
-        "p-6 transition-all duration-200",
-        "hover:-translate-y-1 hover:border-border hover:shadow-xl hover:shadow-black/10",
+        "p-6 transition-all duration-300",
+        "hover:-translate-y-1 hover:border-primary/20 hover:shadow-xl hover:shadow-black/10",
         className,
       )}
     >
-      {/* Top Row */}
-      <div className="flex items-start justify-between">
-        <div className="flex items-center gap-4">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3 min-w-0">
           <div
             className={cn(
-              "flex h-14 w-14 items-center justify-center rounded-full",
-              "ring-1 ring-white/5",
+              "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl",
+              "ring-1 ring-white/5 transition-all duration-300",
+              "group-hover:scale-105",
               colors.icon,
             )}
           >
             {icon}
           </div>
 
-          <div>
-            <p className="text-sm font-medium text-muted-foreground">{title}</p>
-
-            <div className="mt-2 text-5xl font-bold tracking-tight text-foreground">
-              {value}
-            </div>
-          </div>
+          <span className="truncate text-sm font-semibold text-muted-foreground">
+            {title}
+          </span>
         </div>
 
         {trend && (
           <div
             className={cn(
-              "inline-flex items-center gap-1 rounded-xl border px-3 py-1.5",
-              "text-sm font-semibold",
+              "flex shrink-0 items-center gap-1 rounded-full border px-2.5 py-1",
+              "text-xs font-semibold",
               colors.badge,
             )}
           >
-            {trend.direction === "up" && <ArrowUpRight className="h-4 w-4" />}
-
-            {trend.direction === "down" && (
-              <ArrowDownRight className="h-4 w-4" />
+            {trend.direction === "up" && (
+              <ArrowUpRight className="h-3.5 w-3.5" />
             )}
 
-            {trend.direction === "neutral" && <Minus className="h-4 w-4" />}
+            {trend.direction === "down" && (
+              <ArrowDownRight className="h-3.5 w-3.5" />
+            )}
+
+            {trend.direction === "neutral" && <Minus className="h-3.5 w-3.5" />}
 
             {trend.change}
           </div>
         )}
       </div>
 
-      {/* Divider */}
-      <div className="my-6 h-px bg-border/60" />
-
-      {/* Bottom */}
-      <div className="flex items-center justify-between">
-        <p className="text-sm text-muted-foreground">{description}</p>
-
-        <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground/60">
-          Live
-        </span>
+      {/* KPI */}
+      <div className="mt-7">
+        <div className="text-5xl font-bold tracking-tight leading-none">
+          {value}
+        </div>
       </div>
+
+      {/* Footer */}
+      {subtitle && (
+        <>
+          <div className="my-5 h-px bg-border/60" />
+
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            {subtitle}
+          </p>
+        </>
+      )}
     </div>
   );
 };
+
 export default MetricCard;

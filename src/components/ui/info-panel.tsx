@@ -84,21 +84,6 @@ const InfoPanel: FC<Props> = ({ entity, className = "", onOpenDetails }) => {
           <dt className="font-medium text-foreground/90">Storage</dt>
           <dd>{storageDisplay}</dd>
         </div>
-
-        <div>
-          <dt className="font-medium text-foreground/90">Incoming Shipments</dt>
-          <dd>—</dd>
-        </div>
-
-        <div>
-          <dt className="font-medium text-foreground/90">Outgoing Shipments</dt>
-          <dd>—</dd>
-        </div>
-
-        <div>
-          <dt className="font-medium text-foreground/90">Critical Alerts</dt>
-          <dd>—</dd>
-        </div>
       </dl>
 
       <div className="mt-6">
