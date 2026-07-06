@@ -1,5 +1,7 @@
 import { useMemo, useState, useEffect } from "react";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "@/app/router/paths";
 
 import type { Rig, Warehouse } from "@/types";
 import MapMarker from "./map-marker";
@@ -28,6 +30,7 @@ function FitBounds({ bounds }: { bounds?: [number, number][] }) {
 
 export default function InteractiveMap({ rigs, warehouses }: Props) {
   const { theme } = useTheme();
+  const navigate = useNavigate();
 
   const [selected, setSelected] = useState<Rig | Warehouse | null>(null);
 
@@ -107,6 +110,7 @@ export default function InteractiveMap({ rigs, warehouses }: Props) {
                 position={[rig.coordinates.lat, rig.coordinates.lng]}
                 color={getRigColor(rig.status)}
                 name={rig.name}
+                selected={selected?.id === rig.id}
                 onClick={() => setSelected(rig)}
               />
             ))}
@@ -120,6 +124,7 @@ export default function InteractiveMap({ rigs, warehouses }: Props) {
                 ]}
                 color="#8b5cf6"
                 name={warehouse.name}
+                selected={selected?.id === warehouse.id}
                 onClick={() => setSelected(warehouse)}
               />
             ))}
@@ -141,7 +146,17 @@ export default function InteractiveMap({ rigs, warehouses }: Props) {
 
         <aside className="w-[380px] border-l border-border bg-background">
           <div className="sticky top-0 h-full overflow-auto p-6">
-            <InfoPanel entity={selected} onOpenDetails={() => {}} />
+            <InfoPanel
+              entity={selected}
+              onOpenDetails={() => {
+                if (!selected) return;
+
+                // only rigs have a details page
+                if ("status" in selected) {
+                  navigate(ROUTES.rigDetails(selected.id));
+                }
+              }}
+            />
           </div>
         </aside>
       </div>

@@ -39,6 +39,7 @@ const SectionHeader: FC<Props> = ({
             text-sm font-medium
             text-muted-foreground
             backdrop-blur
+            cursor-pointer
             transition-all duration-300
             ease-[cubic-bezier(0.22,1,0.36,1)]
             hover:border-primary/30

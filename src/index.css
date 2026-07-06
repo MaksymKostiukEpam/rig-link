@@ -6,39 +6,156 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+  rig-link theme
+  -----------------------------------------------------------------
+  Direction: Vercel's quiet, high-contrast structure as the base,
+  a Blade Runner night-city dark mode (deep blue-black, not pure
+  black), with a Cyberpunk 2077 neon-cyan / magenta / amber accent
+  system layered on top for live tracking, alerts and status.
+
+  Signature color: --primary (neon cyan) = the "signal" — active
+  rigs, live shipments, anything moving right now. --warning
+  (amber) reads as derrick/hazard light. --success (green) and
+  --destructive (red) are the two poles of asset status.
+*/
+
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.147 0.004 49.25);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.147 0.004 49.25);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.147 0.004 49.25);
-  --primary: oklch(0.508 0.118 165.612);
-  --primary-foreground: oklch(0.979 0.021 166.113);
-  --secondary: oklch(0.967 0.001 286.375);
-  --secondary-foreground: oklch(0.21 0.006 285.885);
-  --muted: oklch(0.97 0.001 106.424);
-  --muted-foreground: oklch(0.553 0.013 58.071);
-  --accent: oklch(0.97 0.001 106.424);
-  --accent-foreground: oklch(0.216 0.006 56.043);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.923 0.003 48.717);
-  --input: oklch(0.923 0.003 48.717);
-  --ring: oklch(0.709 0.01 56.259);
-  --chart-1: oklch(0.869 0.005 56.366);
-  --chart-2: oklch(0.553 0.013 58.071);
-  --chart-3: oklch(0.444 0.011 73.639);
-  --chart-4: oklch(0.374 0.01 67.558);
-  --chart-5: oklch(0.268 0.007 34.298);
+  --background: oklch(0.985 0.003 240);
+  --foreground: oklch(0.16 0.02 258);
+  --card: oklch(0.995 0.002 240);
+  --card-foreground: oklch(0.16 0.02 258);
+  --popover: oklch(0.995 0.002 240);
+  --popover-foreground: oklch(0.16 0.02 258);
+  --primary: oklch(0.62 0.16 200);
+  --primary-foreground: oklch(0.99 0.005 200);
+  --secondary: oklch(0.955 0.005 250);
+  --secondary-foreground: oklch(0.22 0.02 258);
+  --muted: oklch(0.96 0.004 250);
+  --muted-foreground: oklch(0.48 0.02 255);
+  --accent: oklch(0.93 0.03 200);
+  --accent-foreground: oklch(0.2 0.03 200);
+  --destructive: oklch(0.58 0.22 25);
+  --destructive-foreground: oklch(0.99 0 0);
+  --success: oklch(0.6 0.14 155);
+  --success-foreground: oklch(0.99 0 0);
+  --warning: oklch(0.75 0.15 70);
+  --warning-foreground: oklch(0.18 0.03 70);
+  --border: oklch(0.9 0.006 250);
+  --input: oklch(0.9 0.006 250);
+  --ring: oklch(0.62 0.16 200);
+  --chart-1: oklch(0.62 0.16 200);
+  --chart-2: oklch(0.75 0.15 70);
+  --chart-3: oklch(0.62 0.2 320);
+  --chart-4: oklch(0.55 0.18 265);
+  --chart-5: oklch(0.6 0.14 155);
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0.001 106.423);
-  --sidebar-foreground: oklch(0.147 0.004 49.25);
-  --sidebar-primary: oklch(0.596 0.145 163.225);
-  --sidebar-primary-foreground: oklch(0.979 0.021 166.113);
-  --sidebar-accent: oklch(0.97 0.001 106.424);
-  --sidebar-accent-foreground: oklch(0.216 0.006 56.043);
-  --sidebar-border: oklch(0.923 0.003 48.717);
-  --sidebar-ring: oklch(0.709 0.01 56.259);
+  --sidebar: oklch(0.975 0.004 250);
+  --sidebar-foreground: oklch(0.16 0.02 258);
+  --sidebar-primary: oklch(0.62 0.16 200);
+  --sidebar-primary-foreground: oklch(0.99 0.005 200);
+  --sidebar-accent: oklch(0.93 0.03 200);
+  --sidebar-accent-foreground: oklch(0.2 0.03 200);
+  --sidebar-border: oklch(0.9 0.006 250);
+  --sidebar-ring: oklch(0.62 0.16 200);
+}
+
+.dark {
+  --background: oklch(0.15 0.018 262);
+  --foreground: oklch(0.94 0.01 210);
+  --card: oklch(0.19 0.02 262);
+  --card-foreground: oklch(0.94 0.01 210);
+  --popover: oklch(0.19 0.02 262);
+  --popover-foreground: oklch(0.94 0.01 210);
+  --primary: oklch(0.78 0.17 195);
+  --primary-foreground: oklch(0.13 0.02 262);
+  --secondary: oklch(0.25 0.02 262);
+  --secondary-foreground: oklch(0.94 0.01 210);
+  --muted: oklch(0.23 0.018 262);
+  --muted-foreground: oklch(0.63 0.02 240);
+  --accent: oklch(0.28 0.05 320);
+  --accent-foreground: oklch(0.94 0.02 320);
+  --destructive: oklch(0.68 0.21 25);
+  --destructive-foreground: oklch(0.13 0 0);
+  --success: oklch(0.72 0.17 155);
+  --success-foreground: oklch(0.12 0.02 155);
+  --warning: oklch(0.8 0.16 75);
+  --warning-foreground: oklch(0.14 0.02 75);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 14%);
+  --ring: oklch(0.78 0.17 195);
+  --chart-1: oklch(0.78 0.17 195);
+  --chart-2: oklch(0.75 0.2 330);
+  --chart-3: oklch(0.8 0.16 75);
+  --chart-4: oklch(0.68 0.19 280);
+  --chart-5: oklch(0.72 0.17 155);
+  --sidebar: oklch(0.13 0.018 262);
+  --sidebar-foreground: oklch(0.94 0.01 210);
+  --sidebar-primary: oklch(0.78 0.17 195);
+  --sidebar-primary-foreground: oklch(0.13 0.02 262);
+  --sidebar-accent: oklch(0.28 0.05 320);
+  --sidebar-accent-foreground: oklch(0.94 0.02 320);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.78 0.17 195);
+}
+
+/*
+  This is the block that was missing: Tailwind v4 only turns your
+  CSS custom properties into utilities (bg-background, text-primary,
+  border-border, rounded-lg, font-sans, ...) if they're registered
+  here. Without it, none of the shadcn-style class names resolve.
+*/
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
 }
 
 html {
@@ -53,7 +170,7 @@ html.dark {
 body {
   margin: 0;
   min-height: 100vh;
-  background: var(--background);
+  @apply bg-background text-foreground;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
@@ -64,36 +181,61 @@ body {
   transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
-.dark {
-  --background: oklch(0.147 0.004 49.25);
-  --foreground: oklch(0.985 0.001 106.423);
-  --card: oklch(0.216 0.006 56.043);
-  --card-foreground: oklch(0.985 0.001 106.423);
-  --popover: oklch(0.216 0.006 56.043);
-  --popover-foreground: oklch(0.985 0.001 106.423);
-  --primary: oklch(0.432 0.095 166.913);
-  --primary-foreground: oklch(0.979 0.021 166.113);
-  --secondary: oklch(0.274 0.006 286.033);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.268 0.007 34.298);
-  --muted-foreground: oklch(0.709 0.01 56.259);
-  --accent: oklch(0.268 0.007 34.298);
-  --accent-foreground: oklch(0.985 0.001 106.423);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.553 0.013 58.071);
-  --chart-1: oklch(0.869 0.005 56.366);
-  --chart-2: oklch(0.553 0.013 58.071);
-  --chart-3: oklch(0.444 0.011 73.639);
-  --chart-4: oklch(0.374 0.01 67.558);
-  --chart-5: oklch(0.268 0.007 34.298);
-  --sidebar: oklch(0.216 0.006 56.043);
-  --sidebar-foreground: oklch(0.985 0.001 106.423);
-  --sidebar-primary: oklch(0.696 0.17 162.48);
-  --sidebar-primary-foreground: oklch(0.262 0.051 172.552);
-  --sidebar-accent: oklch(0.268 0.007 34.298);
-  --sidebar-accent-foreground: oklch(0.985 0.001 106.423);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.553 0.013 58.071);
+/* Map markers */
+.rig-marker {
+  position: relative;
+  display: block;
+  width: 22px;
+  height: 22px;
+}
+
+.rig-marker-dot {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: var(--marker-color);
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  transform: scale(1);
+  transform-origin: center;
+  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.18s ease;
+}
+
+.rig-marker:hover .rig-marker-dot {
+  cursor: pointer;
+  transform: scale(1.35);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35),
+    0 0 0 6px color-mix(in oklch, var(--marker-color) 30%, transparent);
+}
+
+.rig-marker.is-selected .rig-marker-dot {
+  transform: scale(1.25);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35),
+    0 0 0 5px color-mix(in oklch, var(--marker-color) 45%, transparent);
+}
+
+.rig-marker-pulse {
+  position: absolute;
+  inset: -6px;
+  border-radius: 9999px;
+  background: var(--marker-color);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.rig-marker.is-selected .rig-marker-pulse {
+  animation: rig-marker-pulse 1.8s ease-out infinite;
+}
+
+@keyframes rig-marker-pulse {
+  0% {
+    opacity: 0.45;
+    transform: scale(0.6);
+  }
+  70%,
+  100% {
+    opacity: 0;
+    transform: scale(1.8);
+  }
 }

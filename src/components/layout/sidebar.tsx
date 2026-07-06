@@ -9,6 +9,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { ROUTES } from "@/app/router/paths";
+import { useEffect, useState } from "react";
 
 type SidebarLink = {
   title: string;
@@ -41,7 +42,7 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
       />
 
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex w-[280px] flex-col border-r border-border/60 bg-sidebar/95 backdrop-blur-xl transition-transform duration-300 md:static md:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 flex w-[280px] flex-col overflow-hidden border-r border-border/60 bg-sidebar/95 backdrop-blur-xl transition-transform duration-300 md:sticky md:top-0 md:h-screen md:translate-x-0 ${
           mobileOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -60,7 +61,7 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
 
               <div className="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
                 <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                Industrial Logistics
+                Industrial Logistics Platform
               </div>
             </div>
           </div>
@@ -68,7 +69,7 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
 
         {/* Navigation */}
 
-        <nav className="flex flex-1 flex-col gap-2 px-4 py-5">
+        <nav className="flex-1 overflow-y-auto px-4 py-5">
           {links.map((item) => {
             const Icon = item.icon;
 
@@ -126,19 +127,56 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
 
         {/* Footer */}
 
-        <div className="mt-auto border-t border-border/60 p-5">
-          <div className="rounded-xl border border-border/60 bg-card px-4 py-3">
-            <div className="flex items-center gap-2 text-sm font-medium">
-              <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
-              All systems operational
+        <div className="mt-auto border-t border-border/60 bg-sidebar/95 p-5">
+          <div className="rounded-xl border border-border/60 bg-card p-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 font-semibold text-primary">
+                DU
+              </div>
+
+              <div>
+                <p className="text-sm font-semibold">Demo User</p>
+                <p className="text-xs text-muted-foreground">
+                  Operations Manager
+                </p>
+              </div>
             </div>
 
-            <p className="mt-1 text-xs text-muted-foreground">
-              Fleet synchronization active
-            </p>
+            <div className="my-4 h-px bg-border" />
+
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-muted-foreground">System Time</span>
+              <UtcClock />
+            </div>
           </div>
         </div>
       </aside>
     </>
   );
+}
+
+function UtcClock() {
+  const [time, setTime] = useState("");
+
+  useEffect(() => {
+    const update = () => {
+      setTime(
+        new Date().toLocaleTimeString("en-GB", {
+          timeZone: "UTC",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false,
+        }) + " UTC",
+      );
+    };
+
+    update();
+
+    const interval = setInterval(update, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return <span className="font-mono font-medium">{time}</span>;
 }

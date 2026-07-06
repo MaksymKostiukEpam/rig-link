@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "@/app/router/paths";
 import MetricCard from "@/components/ui/metric-card";
 import InteractiveMap from "@/components/ui/interactive-map";
 import SectionHeader from "@/components/ui/section-header";
@@ -7,8 +9,10 @@ import { rigs, warehouses } from "@/mocks/data";
 import { Warehouse, Package, HardHat, TriangleAlert } from "lucide-react";
 
 export default function DashboardPage() {
+  const navigate = useNavigate();
+
   return (
-    <div className="mx-auto max-w-[1440px] space-y-8 p-6">
+    <div className="space-y-8">
       <section>
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
           <MetricCard
@@ -61,6 +65,8 @@ export default function DashboardPage() {
         <SectionHeader
           title="Field Operations"
           subtitle="Monitor offshore rigs, terminals and logistics positions in real time."
+          actionLabel="View all rigs"
+          onAction={() => navigate(ROUTES.rigs)}
         />
 
         <div className="mt-4">

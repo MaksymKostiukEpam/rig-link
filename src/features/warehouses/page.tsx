@@ -1,3 +1,5 @@
+import ComingSoonPage from "@/components/ui/coming-soon";
+
 export default function WarehousesPage() {
-  return <div>Coming soon</div>;
+  return <ComingSoonPage />;
 }

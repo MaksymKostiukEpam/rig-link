@@ -155,7 +155,7 @@ export const rigs: Rig[] = [
     incomingShipmentIds: ["shipment-005", "shipment-018"],
     outgoingShipmentIds: ["shipment-006", "shipment-013"],
     alerts: [],
-    image: "/assets/rig-deepwater-echo.jpg",
+    image: "/assets/rig-poseidon-west.jpg",
     weather: { condition: "Stormy", windSpeed: 24, temperature: 20 },
   },
   {
@@ -174,7 +174,7 @@ export const rigs: Rig[] = [
     incomingShipmentIds: ["shipment-010", "shipment-017"],
     outgoingShipmentIds: ["shipment-014", "shipment-019"],
     alerts: [],
-    image: "/assets/rig-north-horizon.jpg",
+    image: "/assets/rig-atlas-alpha.jpg",
     weather: { condition: "Clear", windSpeed: 9, temperature: 25 },
   },
   {
@@ -212,7 +212,7 @@ export const rigs: Rig[] = [
     incomingShipmentIds: ["shipment-001", "shipment-012"],
     outgoingShipmentIds: ["shipment-009", "shipment-011"],
     alerts: [],
-    image: "/assets/rig-meridian.jpg",
+    image: "/assets/rig-atlas-alpha.jpg",
     weather: { condition: "Rain", windSpeed: 20, temperature: 18 },
   },
 ];
