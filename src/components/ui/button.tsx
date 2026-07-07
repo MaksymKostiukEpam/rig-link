@@ -15,10 +15,9 @@ const variants = {
   primary: cn(
     "border border-primary/30",
     "bg-primary text-primary-foreground",
-    "shadow-md shadow-primary/20",
+    "shadow-sm shadow-primary/10",
     "hover:bg-primary/90",
     "hover:border-primary",
-    "hover:shadow-xl hover:shadow-primary/30",
   ),
 
   secondary: cn(
