@@ -150,7 +150,7 @@ export default function RigLogistics({ rig }: Props) {
               min={1}
               value={quantity}
               onChange={(e) => setQuantity(Number(e.target.value))}
-              className="h-11 w-full rounded-xl border border-border bg-background px-3 outline-none transition focus:border-primary"
+              className="h-9 w-full rounded-xl border border-border bg-background px-3 outline-none transition focus:border-primary"
             />
           </div>
 
@@ -177,12 +177,11 @@ export default function RigLogistics({ rig }: Props) {
             </Select>
           </div>
 
-          {/* Button */}
           <div className="flex items-end">
             <Button
               onClick={requestShipment}
               disabled={loading}
-              className="h-11 w-full"
+              className="h-10 w-full"
             >
               <Plus className="mr-2 h-4 w-4" />
               {loading ? "Creating..." : "Request Shipment"}
