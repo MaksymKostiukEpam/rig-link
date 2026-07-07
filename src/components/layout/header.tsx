@@ -5,7 +5,11 @@ import { usePageMeta } from "@/hooks/use-page-meta";
 import ThemeToggle from "../ui/theme-toggle";
 import Button from "../ui/button";
 
-export default function Header() {
+type HeaderProps = {
+  onMenuClick: () => void;
+};
+
+export default function Header({ onMenuClick }: HeaderProps) {
   const { title, subtitle } = usePageMeta();
 
   const navigate = useNavigate();
@@ -20,7 +24,10 @@ export default function Header() {
     <header className="sticky top-0 z-20 border-b border-border/60 bg-background/80 backdrop-blur-xl">
       <div className="flex h-20 items-center justify-between px-8">
         <div className="flex items-center gap-4">
-          <button className="rounded-lg p-2 transition hover:bg-muted md:hidden">
+          <button
+            onClick={onMenuClick}
+            className="rounded-lg p-2 transition hover:bg-muted md:hidden"
+          >
             <Menu className="h-5 w-5" />
           </button>
 

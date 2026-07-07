@@ -80,10 +80,10 @@ export default function InteractiveMap({ rigs, warehouses }: Props) {
 
   return (
     <div className="rounded-3xl border border-border/60 bg-card shadow-xl overflow-hidden">
-      <div className="flex h-[620px]">
+      <div className="flex flex-col lg:flex-row lg:h-[620px]">
         {/* Map */}
 
-        <div className="relative flex-[2.4]">
+        <div className="relative h-[420px] lg:h-auto lg:flex-[2.4]">
           <MapContainer
             //@ts-expect-error
             center={[30, -120]}
@@ -132,7 +132,7 @@ export default function InteractiveMap({ rigs, warehouses }: Props) {
 
           {/* Legend */}
 
-          <div className="absolute bottom-5 left-5 z-[500] rounded-2xl border border-border/70 bg-background/90 backdrop-blur-md px-4 py-3 shadow-lg">
+          <div className="absolute bottom-3 left-3 lg:bottom-5 lg:left-5 z-[500] rounded-2xl border border-border/70 bg-background/90 backdrop-blur-md px-3 py-2 lg:px-4 lg:py-3 shadow-lg">
             <div className="space-y-2 text-sm">
               <LegendItem color="#22c55e" label="Operational" />
               <LegendItem color="#f59e0b" label="Maintenance" />
@@ -144,8 +144,8 @@ export default function InteractiveMap({ rigs, warehouses }: Props) {
 
         {/* Info Panel */}
 
-        <aside className="w-[380px] border-l border-border bg-background">
-          <div className="sticky top-0 h-full overflow-auto p-6">
+        <aside className="border-t lg:border-t-0 lg:border-l border-border bg-background lg:w-[380px]">
+          <div className="p-6 lg:sticky lg:top-0 lg:h-full lg:overflow-auto">
             <InfoPanel
               entity={selected}
               onOpenDetails={() => {

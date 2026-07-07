@@ -27,7 +27,7 @@ export default function AppLayout() {
         />
 
         <div className="flex min-h-screen flex-1 flex-col">
-          <Header />
+          <Header onMenuClick={() => setSidebarOpen(true)} />
 
           <main className="app-main flex-1 p-6 md:p-8">
             <div className="mx-auto flex min-h-full w-full max-w-7xl flex-col gap-6">
