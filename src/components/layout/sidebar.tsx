@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { ROUTES } from "@/app/router/paths";
 import { useEffect, useState } from "react";
+import NotificationPopover from "../ui/notification-popover";
 
 type SidebarLink = {
   title: string;
@@ -129,17 +130,21 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
 
         <div className="mt-auto border-t border-border/60 bg-sidebar/95 p-5">
           <div className="rounded-xl border border-border/60 bg-card p-4">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 font-semibold text-primary">
-                DU
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 font-semibold text-primary">
+                  DU
+                </div>
+
+                <div>
+                  <p className="text-sm font-semibold">Demo User</p>
+                  <p className="text-xs text-muted-foreground">
+                    Operations Manager
+                  </p>
+                </div>
               </div>
 
-              <div>
-                <p className="text-sm font-semibold">Demo User</p>
-                <p className="text-xs text-muted-foreground">
-                  Operations Manager
-                </p>
-              </div>
+              <NotificationPopover />
             </div>
 
             <div className="my-4 h-px bg-border" />

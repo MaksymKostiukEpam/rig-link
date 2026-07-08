@@ -17,6 +17,18 @@ export default function AppLayout() {
     return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    if (loading) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [loading]);
+
   return (
     <div className="app-shell min-h-screen bg-background text-foreground">
       {loading && <LoadingOverlay />}

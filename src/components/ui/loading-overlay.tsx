@@ -2,7 +2,7 @@ import { Activity, HardHat, Package, Warehouse } from "lucide-react";
 
 export default function LoadingOverlay() {
   return (
-    <div className="absolute inset-0 z-[9999] flex items-center justify-center bg-background/70 backdrop-blur-md">
+    <div className="fixed inset-0 inset-0 z-[9999] flex items-center justify-center bg-background/70 backdrop-blur-md">
       <div className="w-full max-w-md rounded-3xl border bg-card p-8 shadow-2xl">
         <div className="mb-8 flex justify-center">
           <div className="relative">
