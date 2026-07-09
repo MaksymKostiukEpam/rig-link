@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { ArrowDown, ArrowUp, Package, Plus, Truck } from "lucide-react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Select,
   SelectContent,
@@ -10,74 +11,92 @@ import {
 } from "@/components/ui/select";
 
 import Button from "@/components/ui/button";
-import type { InventoryItem, Rig, Shipment } from "@/types";
+import type { InventoryItem, Rig, Shipment, Vehicle, VehicleType } from "@/types";
 
 type Props = {
   rig: Rig;
 };
 
-const SUPPLIES = ["Fuel", "Water", "Food"] as const;
+type CreateShipmentBody = {
+  originId: string;
+  originName: string;
+  destinationId: string;
+  destinationName: string;
+  vehicle: Vehicle;
+  cargo: InventoryItem[];
+};
 
-const VEHICLES = ["Supply Vessel", "Cargo Helicopter"];
+const SUPPLIES = ["Fuel", "Water", "Food"] as const;
+const VEHICLES: VehicleType[] = ["Supply Vessel", "Helicopter"];
 
 export default function RigLogistics({ rig }: Props) {
-  const [shipments, setShipments] = useState<Shipment[]>([]);
+  const queryClient = useQueryClient();
 
   const [resource, setResource] = useState("Fuel");
   const [quantity, setQuantity] = useState(500);
-  const [vehicle, setVehicle] = useState<string>(VEHICLES[0]);
-  const [loading, setLoading] = useState(false);
+  const [transport, setTransport] = useState<VehicleType>(VEHICLES[0]);
+
+  const { data: allShipments = [] } = useQuery({
+    queryKey: ["shipments"],
+    queryFn: async (): Promise<Shipment[]> => {
+      const res = await fetch("/api/shipments");
+      if (!res.ok) throw new Error("Failed to load shipments");
+      return res.json();
+    },
+  });
 
   const incoming = useMemo(
-    () => shipments.filter((s) => s.destinationId === rig.id),
-    [shipments, rig.id],
+    () => allShipments.filter((s) => s.destinationId === rig.id),
+    [allShipments, rig.id],
   );
 
   const outgoing = useMemo(
-    () => shipments.filter((s) => s.originId === rig.id),
-    [shipments, rig.id],
+    () => allShipments.filter((s) => s.originId === rig.id),
+    [allShipments, rig.id],
   );
 
-  function requestShipment() {
-    setLoading(true);
-
-    setTimeout(() => {
-      const cargo: InventoryItem = {
-        id: crypto.randomUUID(),
-        name: resource,
-        quantity,
-        unit: "kg",
-      };
-
-      const shipment: Shipment = {
-        id: `SH-${Math.floor(1000 + Math.random() * 9000)}`,
-
-        originId: "warehouse-houston",
-        originName: "Houston Warehouse",
-
-        destinationId: rig.id,
-        destinationName: rig.name,
-        //@ts-expect-error
-        vehicle,
-
-        estimatedArrival: "3 days",
-
-        createdAt: new Date().toISOString(),
-        lastUpdated: new Date().toISOString(),
-
-        status: "Preparing",
-
-        cargo: [cargo],
-      };
-
-      setShipments((prev) => [shipment, ...prev]);
-
+  const mutation = useMutation({
+    mutationFn: (body: CreateShipmentBody) =>
+      fetch("/api/shipments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      }).then((res) => {
+        if (!res.ok) throw new Error("Request failed");
+        return res.json() as Promise<Shipment>;
+      }),
+    onSuccess: (shipment) => {
+      queryClient.invalidateQueries({ queryKey: ["shipments"] });
       toast.success(`Shipment ${shipment.id} requested`, {
-        description: `${quantity} kg of ${resource} en route via ${vehicle} to ${rig.name}.`,
+        description: `${shipment.cargo[0]?.quantity} kg of ${shipment.cargo[0]?.name} en route via ${shipment.vehicle.name} to ${rig.name}.`,
       });
+      setQuantity(500);
+      setResource("Fuel");
+      setTransport(VEHICLES[0]);
+    },
+    onError: () => toast.error("Failed to request shipment"),
+  });
 
-      setLoading(false);
-    }, 1000);
+  function handleRequest() {
+    mutation.mutate({
+      originId: "warehouse-houston",
+      originName: "Houston Warehouse",
+      destinationId: rig.id,
+      destinationName: rig.name,
+      vehicle: {
+        id: crypto.randomUUID(),
+        name: transport,
+        type: transport,
+      },
+      cargo: [
+        {
+          id: crypto.randomUUID(),
+          name: resource,
+          quantity,
+          unit: "kg",
+        },
+      ],
+    });
   }
 
   return (
@@ -154,14 +173,13 @@ export default function RigLogistics({ rig }: Props) {
             />
           </div>
 
-          {/* Vehicle */}
+          {/* Transport */}
           <div className="space-y-2">
             <label className="text-sm font-medium">Transport</label>
 
             <Select
-              value={vehicle}
-              //@ts-expect-error
-              onValueChange={(value) => setVehicle(value)}
+              value={transport}
+              onValueChange={(value) => setTransport(value as VehicleType)}
             >
               <SelectTrigger className="h-11 w-full">
                 <SelectValue />
@@ -179,12 +197,12 @@ export default function RigLogistics({ rig }: Props) {
 
           <div className="flex items-end">
             <Button
-              onClick={requestShipment}
-              disabled={loading}
+              onClick={handleRequest}
+              disabled={mutation.isPending}
               className="h-10 w-full"
             >
               <Plus className="mr-2 h-4 w-4" />
-              {loading ? "Creating..." : "Request Shipment"}
+              {mutation.isPending ? "Creating..." : "Request Shipment"}
             </Button>
           </div>
         </div>
@@ -249,8 +267,10 @@ function ShipmentCard({ shipment }: { shipment: Shipment }) {
         <Info label="Quantity">
           {shipment.cargo[0]?.quantity} {shipment.cargo[0]?.unit}
         </Info>
-        <Info label="Vehicle">{shipment.vehicle as any}</Info>
-        <Info label="ETA">{shipment.estimatedArrival}</Info>
+        <Info label="Vehicle">{shipment.vehicle.name}</Info>
+        <Info label="ETA">
+          {new Date(shipment.estimatedArrival).toLocaleDateString()}
+        </Info>
         <Info label="Origin">{shipment.originName}</Info>
       </div>
     </div>
