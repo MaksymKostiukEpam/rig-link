@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { ArrowDown, ArrowUp, Package, Plus, Truck } from "lucide-react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Select,
   SelectContent,
@@ -36,7 +36,7 @@ export default function RigLogistics({ rig }: Props) {
   const [quantity, setQuantity] = useState(500);
   const [transport, setTransport] = useState<VehicleType>(VEHICLES[0]);
 
-  const { data: allShipments = [] } = useQuery({
+  const { data: allShipments } = useSuspenseQuery({
     queryKey: ["shipments"],
     queryFn: async (): Promise<Shipment[]> => {
       const res = await fetch("/api/shipments");
